@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1041079678712",
+    "project_id": "cocktailapi-5f592",
+    "storage_bucket": "cocktailapi-5f592.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041079678712:android:81117ebfd7b4a04599ed0d",
+        "android_client_info": {
+          "package_name": "com.verycool.cocktailapi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUuyN0FqfnH4ICPL3CAlWGHgFiAPXfd2U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
