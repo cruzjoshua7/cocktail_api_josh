@@ -6,9 +6,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.verycool.cocktailapi.presenter.CockTailViewModel
@@ -28,7 +30,11 @@ fun Navigation() {
 
     NavHost(navController = navController, startDestination = Screen.LoginScreen.route) {
         composable(route = Screen.LoginScreen.route) { LoginScreen(navController = navController, loginAuth) }
-        composable(route = Screen.CockTailScreen.route) { CockTailScreen(navController = navController) }
+        composable(
+            route = Screen.CockTailScreen.route + "/{name}",
+            arguments = listOf(navArgument("name") { type = NavType.StringType })
+            ) { entry ->
+            CockTailScreen(navController = navController , name = entry.arguments?.getString("name"),viewModel) }
         composable(route = Screen.CockTailListScreen.route) { CockTailListScreen(navController = navController,viewModel) }
 
     }

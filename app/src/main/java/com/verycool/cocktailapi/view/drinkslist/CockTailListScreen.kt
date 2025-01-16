@@ -35,6 +35,8 @@ import coil.compose.rememberImagePainter
 import com.verycool.cocktailapi.R
 import com.verycool.cocktailapi.domain.model.DrinkModel
 import com.verycool.cocktailapi.presenter.CockTailViewModel
+import com.verycool.cocktailapi.view.navigation.Screen
+
 @Composable
 fun CockTailListScreen(navController: NavController, viewModel: CockTailViewModel) {
     val drinks by viewModel.drinks.collectAsState()
@@ -71,7 +73,9 @@ fun CockTailListScreen(navController: NavController, viewModel: CockTailViewMode
                 Text(
                     text = letter.toString(),
                     modifier = Modifier
-                        .clickable { /* Add your functionality here */ }
+                        .clickable {
+                            viewModel.fetchDrinksByLetter(letter.toString())
+                        }
                         .padding(8.dp),
                 )
             }
@@ -94,18 +98,20 @@ fun CockTailListScreen(navController: NavController, viewModel: CockTailViewMode
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(drinks) { drink ->
-                DrinkCard(drink = drink)
+                DrinkCard(drink = drink, navController)
             }
         }
     }
 }
 
 @Composable
-fun DrinkCard(drink: DrinkModel) {
+fun DrinkCard(drink: DrinkModel, navController: NavController) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Add your functionality here */ }
+            .clickable {
+                navController.navigate(Screen.CockTailScreen.withArgs(drink.strDrink.toString()))
+            }
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Row(
