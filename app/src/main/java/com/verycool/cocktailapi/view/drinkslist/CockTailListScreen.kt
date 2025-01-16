@@ -18,9 +18,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,6 +68,34 @@ fun CockTailListScreen(navController: NavController, viewModel: CockTailViewMode
                 .height(200.dp)
                 .padding(8.dp)
         )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .background(Color.LightGray, shape = RoundedCornerShape(8.dp)),
+        ) {
+            TextField(
+                value = "",
+                onValueChange = { /* Add your search functionality */ },
+                placeholder = { Text(text = "Search for a cocktail...") },
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(start = 8.dp, end = 4.dp)
+                    .background(Color.White, shape = RoundedCornerShape(8.dp)),
+                singleLine = true,
+
+            )
+            IconButton(
+                onClick = { /* Add your search click functionality */ },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Icon"
+                )
+            }
+        }
 
         // Alphabet Row
         LazyRow(

@@ -72,4 +72,13 @@ dependencies {
 
     // coil for img
     implementation("io.coil-kt:coil-compose:2.4.0")
+
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.10.0")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.mockito:mockito-core:5.5.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+
 }

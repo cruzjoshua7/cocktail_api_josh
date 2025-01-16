@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.verycool.cocktailapi.R
-import com.verycool.cocktailapi.data.Drinks
 import com.verycool.cocktailapi.data.api.RetroFitClient
 import com.verycool.cocktailapi.domain.model.DrinkDetailsModel
 import com.verycool.cocktailapi.domain.model.DrinkModel
@@ -35,4 +34,16 @@ class CockTailViewModel : ViewModel() {
             }
         }
     }
+
+    fun fetchDrinkByName(name: String) {
+        viewModelScope.launch {
+            try {
+                val response = RetroFitClient.apiInstance.getDrinkByName(name)
+                _drinks.value = response.drinks?.filterNotNull() ?: emptyList()
+            } catch (e: Exception) {
+                _error.value = e.message ?: "An unexpected error occurred"
+            }
+        }
+    }
+
 }
