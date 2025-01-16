@@ -7,22 +7,35 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import com.verycool.cocktailapi.view.login.LoginScreen
+import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.verycool.cocktailapi.view.navigation.Navigation
 import com.verycool.cocktailapi.view.theme.CocktailAPITheme
 
 class MainActivity : ComponentActivity() {
+
+
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CocktailAPITheme { // Your app theme
+            CocktailAPITheme {
+                val navController = rememberNavController()
+
+                val showScaffold = remember { mutableStateOf(false) }
+                var appTitle by remember { mutableStateOf("Login") }
+
                 Scaffold(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    LoginScreen() // Your LoginScreen Composable
+                    Navigation()
                 }
             }
         }

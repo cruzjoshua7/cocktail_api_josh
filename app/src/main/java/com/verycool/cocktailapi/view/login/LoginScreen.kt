@@ -1,5 +1,7 @@
 package com.verycool.cocktailapi.view.login
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,18 +16,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    navController: NavController,
+    loginAuth: FirebaseAuth) {
+
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,22 +65,49 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(32.dp))
 
         // Email TextField
-        TextField(
-            value = "",
-            onValueChange = {},
+        var emailText by remember { mutableStateOf("") }
+
+        OutlinedTextField(
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary
+            ),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.MailOutline,
+                    contentDescription = null
+                )
+            },
+            value = emailText,
+            onValueChange = { emailText = it },
             label = { Text("Email") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.padding(10.dp)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         // Password TextField
-        TextField(
-            value = "",
-            onValueChange = {},
+        var passwordText by remember { mutableStateOf("") }
+        OutlinedTextField(
+            colors = OutlinedTextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary
+            ),
+            leadingIcon = {
+                Icon(
+                    imageVector = Icons.Default.Lock,
+                    contentDescription = null
+                )
+            },
+            value = passwordText,
+            onValueChange = { passwordText = it },
             label = { Text("Password") },
-            modifier = Modifier.fillMaxWidth(),
-            visualTransformation = PasswordVisualTransformation()
+            modifier = Modifier.padding(10.dp)
+
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -81,9 +127,23 @@ fun LoginScreen() {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
+        ) {3
+            var enabledState by remember { mutableStateOf(true) }
+            if (emailText.isEmpty() || passwordText.isEmpty()) {
+                enabledState = false
+            } else {
+                enabledState = true
+            }
             Button(
-                onClick = { /* Add your onClick functionality */ },
+                onClick = {
+                    verifyFirebaseUser(
+                        emailText,
+                        passwordText,
+                        loginAuth,
+                        context,
+                        navController
+                    )
+                },
                 modifier = Modifier.weight(1f)
             ) {
                 Text("Login")
@@ -97,6 +157,26 @@ fun LoginScreen() {
             ) {
                 Text("Register")
             }
+        }
+    }
+}
+
+private fun verifyFirebaseUser(
+    email: String,
+    password: String,
+    auth: FirebaseAuth,
+    context: Context,
+    navController: NavController
+) {
+    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            val user = auth.currentUser
+            Toast.makeText(context, "Good Login by ${user?.email}", Toast.LENGTH_LONG).show()
+            //navigate to home screen
+
+        } else {
+            Toast.makeText(context, "Bad Login: ${task.exception?.message}", Toast.LENGTH_LONG)
+                .show()
         }
     }
 }
