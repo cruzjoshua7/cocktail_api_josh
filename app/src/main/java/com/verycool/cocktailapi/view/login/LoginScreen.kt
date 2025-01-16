@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
+import com.verycool.cocktailapi.view.navigation.Screen
 
 @Composable
 fun LoginScreen(
@@ -127,7 +128,7 @@ fun LoginScreen(
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
-        ) {3
+        ) {
             var enabledState by remember { mutableStateOf(true) }
             if (emailText.isEmpty() || passwordText.isEmpty()) {
                 enabledState = false
@@ -173,6 +174,7 @@ private fun verifyFirebaseUser(
             val user = auth.currentUser
             Toast.makeText(context, "Good Login by ${user?.email}", Toast.LENGTH_LONG).show()
             //navigate to home screen
+            navController.navigate(Screen.CockTailListScreen.route)
 
         } else {
             Toast.makeText(context, "Bad Login: ${task.exception?.message}", Toast.LENGTH_LONG)

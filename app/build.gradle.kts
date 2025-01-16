@@ -63,4 +63,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation ("androidx.navigation:navigation-compose:2.8.5")
 
+    implementation (libs.retrofit)
+    implementation(libs.retrofit.converter)
+    //Gson
+    implementation (libs.gson)
+    //okHttp
+    implementation(platform(libs.okhttp.bom))
+
+    // coil for img
+    implementation("io.coil-kt:coil-compose:2.4.0")
 }
